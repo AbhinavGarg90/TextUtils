@@ -14,60 +14,48 @@ import {
 
 function App() {
   const removeBgClass = () => {
-    document.body.classList.remove("light");
-    document.body.classList.remove("warning");
-    document.body.classList.remove("success");
-    document.body.classList.remove("dark");
-    document.body.classList.remove("danger");
-    document.body.classList.remove("primary");
+    document.body.classList.remove("bg-light");
+    document.body.classList.remove("bg-warning");
+    document.body.classList.remove("bg-success");
+    document.body.classList.remove("bg-dark");
+    document.body.classList.remove("bg-danger");
+    document.body.classList.remove("bg-primary");
   };
-  const toggleMode = (cls) => {
-    if (cls === "switchMode") {
-      if (mode === "dark") {
-        setMode("light")
-      } else {
-        setMode("dark")
-      }
-    };
-    if (mode === "light") {
-      removeBgClass()
-      document.body.style.backgroundColor = "white";
+  const toggleMode = async (cls) => {
+    removeBgClass();
+    document.body.classList.add("bg-" + cls);
+    console.log(document.body.classList);
+    if (cls !== "light") {
+      setMode("dark");
     } else {
-      
-      removeBgClass();
-      document.body.classList.add("bg-" + cls);
+      setMode("light");
     }
   };
-
 
   const [mode, setMode] = useState("light");
 
   return (
     <>
-    
-    <Router>
-      
+      <Router>
+        <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode} />
 
-      <Navbar title="TextUtils" mode={mode} toggleMode={toggleMode}/>
-      
-      <div className="container my-3">
-               
+        <div className="container my-3">
           <Routes>
-            <Route exact path="/" element={<> <TextForm mode={mode} /></>} />
+            <Route
+              exact
+              path="/"
+              element={
+                <>
+                  {" "}
+                  <TextForm mode={mode} />
+                </>
+              }
+            />
 
-            
-
-            <Route exact path="/about" element={<About />}/>
-
-            
+            <Route exact path="/about" element={<About mode={mode} />} />
           </Routes>
-
-
-      </div>
-
-
+        </div>
       </Router>
-
     </>
     // <>
     // <Router>
@@ -81,8 +69,7 @@ function App() {
     //   <div className="container">
     //     <Routes>
     //       <Route exact path="/" element={<TextForm mode={mode} />}></Route>
-        
-        
+
     //       <Route exact path="/about" element={<About />}></Route>
     //     </Routes>
     //   </div>
